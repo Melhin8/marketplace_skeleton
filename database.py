@@ -1,14 +1,17 @@
-import os
+from functools import lru_cache
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from pydantic import BaseSettings, PostgresDsn
 
 
-class DatabaseConfig:
-    DB_USER = os.getenv("POSTGRES_USER")
-    DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-    DB_NAME = os.getenv("POSTGRES_DB")
-    DB_HOST = os.getenv("POSTGRES_HOST")
-    DB_CONFIG = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+class Settings(BaseSettings):
+    POSTGRES_URI: PostgresDsn
+
+
+@lru_cache
+def get_settings() -> Settings:
+    settings = Settings()
+    return settings
 
 
 Base = declarative_base()
@@ -24,7 +27,7 @@ class AsyncDatabaseSession:
 
     def init(self):
         self._engine = create_async_engine(
-            DatabaseConfig.DB_CONFIG,
+            get_settings().POSTGRES_URI,
             future=True,
             echo=True,
         )
