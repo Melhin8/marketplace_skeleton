@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey, UniqueConstraint
 
-from database import Base, db
+from api.database import Base, db
 
 
 class AsyncCRUD():
