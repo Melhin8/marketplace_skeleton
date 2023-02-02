@@ -9,6 +9,8 @@ sqlalchemy = "*"
 alembic = "*"
 asyncpg = "*"
 uvicorn = "*"
+python-jose = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 ipython = "*"
