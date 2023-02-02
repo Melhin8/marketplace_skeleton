@@ -104,7 +104,7 @@ class OrderItem(Base, AsyncCRUD):
     __tablename__ = "order_items"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    order_id = Column(ForeignKey("orders.order_id"), primary_key=True) # type: ignore
-    product_id = Column(ForeignKey("products.product_id"), primary_key=True) # type: ignore
+    order_id = Column(ForeignKey("orders.id"), primary_key=True) # type: ignore
+    product_id = Column(ForeignKey("products.id"), primary_key=True) # type: ignore
     product = relationship("Product", uselist=False)
     quantity = Column(Integer, nullable=False)
