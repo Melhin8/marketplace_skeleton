@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pydantic import BaseSettings, PostgresDsn
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, AsyncConnection
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 
@@ -36,9 +36,8 @@ class AsyncDatabaseSession:
             self._engine, expire_on_commit=False, class_=AsyncSession
         )
     
-    async def create_all(self):
-        async with self._engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+    async def close(self):
+        await self._engine.dispose()
 
 
 db = AsyncDatabaseSession()
